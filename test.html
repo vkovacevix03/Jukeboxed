@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Date Object Example</h2>
+    <p id="dateOutput"></p>
+    <script>
+        let now=new Date();
+        document.getElementById("dateOutput").textContent= "Current Date and Time:"+ now.getMonth();
+        
+        let person ={
+            firstName:'Talon',
+            lastName:'Denton',
+            
+            get FullName(){
+                return '${this.firstname} ${this.lastname}'
+            },
+            set Fulname(name){
+                let parts= person.split('');
+                this.firstName = parts[o];
+                this.lastName = parts[1];
+            }
+
+        } 
+        document.getElementById("Output").textContent= "first and last name:"+ person.FullName();
+        document.getElementById("nameOutput").textContent = "Full Name: " + person.fullName;
+        person.fullName = "Talon Denton";  
+        document.getElementById("nameOutput").textContent += " | After Setting: " + person.fullName
+
+    </script>
+<h2>getters and setters</h2>
+<p id="Output"></p>
+
+
+</body>
+</html>

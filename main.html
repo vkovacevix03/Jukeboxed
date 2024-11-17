@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Jukeboxed</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full viewport height */
+        }
+
+        /* Sidebar style */
+        nav {
+            width: 200px;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        nav .logo-section img {
+            width: 60px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        nav a {
+            padding: 15px;
+            text-align: left;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        nav a:hover {
+            background-color: darkred;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 200px; /* Account for sidebar width */
+            padding: 20px;
+            flex: 1;
+            background-color: #f0f0f0;
+        }
+
+        /* Header with logo */
+        header {
+            background-color: darkred;
+            text-align: center;
+            padding: 20px 10px; /* Padding for space around the logo */
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        header img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            margin: 10px 0 0 0;
+            font-size: 20px;
+        }
+
+        /* Article content */
+        article {
+            padding: 20px;
+            background-color: #f1f1f1;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            line-height: 1.6;
+        }
+
+        article p {
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 5px 20px; /* Reduce padding to make it less tall */
+            background-color: black;
+            color: white;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Gallery layout */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 10px;
+            margin-top: 20px;
+            padding-bottom: 90px;
+        }
+
+        .gallery {
+            border: 1px solid #ccc;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+        }
+        div.gallery img {
+            width: 100%;
+            height: 300px; /* Set a fixed height for all images */
+            object-fit: cover; /* Ensures images cover the area and keep aspect ratio */
+        }
+
+        .gallery .desc {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .gallery:hover {
+            border-color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav>
+    <div class="logo-section">
+        <img src="\images\logo-white.png" alt="Logo">
+        <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
+    </div>
+    <a href="main.html">Home</a>
+    <a href="page2.html">Featured Songs</a>
+    <a href="page3.html">About Us</a>
+    <a href="page4.html">Bounus Songs!</a>
+    <a href="search.html">Search</a>
+
+</nav>
+
+<!-- Main content -->
+<div class="main-content">
+    <header>
+        <!-- Logo and text -->
+        <img src="\images\logo-white.png" alt="Jukeboxed Logo">
+        <h2>Welcome to Jukeboxed</h2>
+    </header>
+    
+    <!-- Main article section -->
+    <article>
+        <h1>What is Jukeboxed?</h1>
+        <p>Jukeboxed is your ultimate destination for discovering and experiencing music like never before. Born from a passion for bringing together diverse music lovers, Jukeboxed offers a curated collection of songs that span genres, eras, and emotions. Whether you're a fan of classic rock anthems, the latest indie hits, or underground electronic beats, Jukeboxed is designed to introduce you to the freshest sounds and hidden gems.</p>
+        
+        <p>Our platform not only provides you with an expansive music library but also highlights featured artists, exclusive tracks, and behind-the-scenes insights into the stories behind the music. Jukeboxed is a space where artists can share their passion, and fans can engage, comment, and even contribute to playlist collaborations. With weekly updates and fresh content, we keep the music discovery experience exciting and unpredictable.</p>
+        
+        <p>Our mission is simple: to amplify the connection between artists and listeners, and to make every song a memorable experience. Tune in, explore, and get Jukeboxed today!</p>
+    </article>
+
+    <h2 style="text-align: center;">Let's get you started with some of our favorites</h2>
+
+    <!-- Gallery Section: First Row of Images -->
+    <div class="gallery-container">
+        <div class="gallery">
+            <a target="_blank" href="page4.html">
+                <img src="\images\3454.png" alt="Sabaton">
+            </a>
+            <div class="desc">Sabaton</div>
+        </div>
+
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="\images\hozer-album.jpg" alt="Hozier's Album">
+            </a>
+            <div class="desc">Hozier's most recent album</div>
+        </div>
+
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="\images\grandson.jpg" alt="Grandson">
+            </a>
+            <div class="desc">Add a description of the image here</div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>Copyright &copy; 2024 All Rights Reserved - <span>Jukeboxed LLC</span></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Jukeboxed</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full viewport height */
+        }
+
+        /* Sidebar style */
+        nav {
+            width: 200px;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        nav .logo-section img {
+            width: 60px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        nav a {
+            padding: 15px;
+            text-align: left;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        nav a:hover {
+            background-color: darkred;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 200px; /* Account for sidebar width */
+            padding: 20px;
+            flex: 1;
+            background-color: #f0f0f0;
+        }
+
+        /* Header with logo */
+        header {
+            background-color: darkred;
+            text-align: center;
+            padding: 20px 10px; /* Padding for space around the logo */
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        header img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            margin: 10px 0 0 0;
+            font-size: 20px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            text-align: left;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Filter button within main content */
+        #filterButton {
+            padding: 10px 40px;
+            background-color: darkred;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+            padding-left: 50%;
+        }
+
+        /* Popup modal box styling within main content */
+        #filterModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        /* Modal header */
+        #filterModal h3 {
+            color: darkred;
+            margin-top: 0;
+        }
+
+        /* Dropdown styling */
+        .filter-option {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: black;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        /* Update button */
+        #updateButton {
+            padding: 10px;
+            width: 100%;
+            background-color: darkred;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Overlay for modal background */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 500;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<nav>
+    <div class="logo-section">
+        <img src="\images\logo-white.png" alt="Logo">
+        <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
+    </div>
+    <a href="main.html">Home</a>
+    <a href="page2.html">Featured Songs</a>
+    <a href="page3.html">About Us</a>
+    <a href="page4.html">Bounus Songs!</a>
+    <a href="search.html">Search</a>
+
+</nav>
+
+<!-- Main content -->
+<div class="main-content">
+
+<!-- Filter button -->
+<button id="filterButton">Discover!</button>
+
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- Filter Modal -->
+<div id="filterModal">
+    <h3>Filter Options</h3>
+    
+    <!-- Genre Filter -->
+    <div class="filter-option">
+        <label for="genre">Filter by Genre</label>
+        <select id="genre">
+            <option value="random">Random</option>
+            <option value="rock">Rock</option>
+            <option value="rap">Rap</option>
+            <option value="classic">Classic</option>
+            <option value="pop">Pop</option>
+            <option value="country">Country</option>
+            <!-- Add more genres as needed -->
+        </select>
+    </div>
+
+    <!-- Artist Filter -->
+    <div class="filter-option">
+        <label for="artist">Filter by Artist</label>
+        <select id="artist">
+            <option value="random">Random</option>
+            <option value="artist1">Artist 1</option>
+            <option value="artist2">Artist 2</option>
+            <option value="artist3">Artist 3</option>
+            <!-- Add more artists as needed -->
+        </select>
+    </div>
+
+    <!-- Update Button -->
+    <button id="updateButton">Update</button>
+</div>
+
+</div>
+
+<script>
+// JavaScript for modal functionality
+const filterButton = document.getElementById('filterButton');
+const filterModal = document.getElementById('filterModal');
+const overlay = document.getElementById('overlay');
+const updateButton = document.getElementById('updateButton');
+
+// Show the filter modal
+filterButton.addEventListener('click', () => {
+    filterModal.style.display = 'block';
+    overlay.style.display = 'block';
+});
+
+// Close the filter modal and overlay
+function closeFilterModal() {
+    filterModal.style.display = 'none';
+    overlay.style.display = 'none';
+}
+
+// Close modal when overlay is clicked
+overlay.addEventListener('click', closeFilterModal);
+
+// Close modal and apply filters on Update button click
+updateButton.addEventListener('click', () => {
+    const selectedGenre = document.getElementById('genre').value;
+    const selectedArtist = document.getElementById('artist').value;
+    
+    console.log("Selected Genre:", selectedGenre);
+    console.log("Selected Artist:", selectedArtist);
+    
+    // Placeholder for AJAX code to apply filters
+    
+    closeFilterModal();
+});
+</script>
+
+
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>Copyright &copy; 2024 All Rights Reserved - <span>Jukeboxed LLC</span></p>
+</footer>
+    
+</body>
+</html>
