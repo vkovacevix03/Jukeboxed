@@ -1,7 +1,7 @@
 <?php
 require_once 'connect.php';
 
-/* try {
+ try {
     // SQL to create the "artists" table
     $sql = "CREATE TABLE IF NOT EXISTS artists (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -44,4 +44,3 @@ require_once 'connect.php';
 // Close the connection
 $pdo = null;
 ?>
-*/
