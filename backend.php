@@ -1,4 +1,4 @@
-<?php
+<?php /*
 require_once 'connect.php';
 
  try {
@@ -43,4 +43,4 @@ require_once 'connect.php';
 
 // Close the connection
 $pdo = null;
-?>
+ */ ?>
