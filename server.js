@@ -1,15 +1,59 @@
+const express = require('express');
+const mysql = require('mysql2');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
-// server.js
+const app = express();
+const port = 3000;
 
-const http = require('http');
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-const PORT = 3000;
-
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello, Node.js debugging works!\n');
+// MySQL Connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '646Wyo0%', 
+    database: 'jukeboxed' 
 });
 
-server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+db.connect(err => {
+    if (err) {
+        console.error('Database connection failed:', err);
+    } else {
+        console.log('Connected to database');
+    }
+});
+
+// API Endpoint for filtering songs
+app.post('/filter', (req, res) => {
+    const { genre, artist } = req.body;
+
+    let query = 'SELECT * FROM songs WHERE 1=1';
+    const params = [];
+
+    if (genre && genre !== 'random') {
+        query += ' AND genre = ?';
+        params.push(genre);
+    }
+
+    if (artist && artist !== 'random') {
+        query += ' AND artist = ?';
+        params.push(artist);
+    }
+
+    db.query(query, params, (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Error fetching data');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// Start server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
