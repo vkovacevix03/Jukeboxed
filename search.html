@@ -29,18 +29,6 @@
             padding-top: 20px;
         }
 
-        nav .logo-section {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-        }
-
-        nav .logo-section img {
-            width: 60px;
-            height: auto;
-            margin-right: 10px;
-        }
-
         nav a {
             padding: 15px;
             text-align: left;
@@ -61,41 +49,7 @@
             background-color: #f0f0f0;
         }
 
-        /* Header with logo */
-        header {
-            background-color: darkred;
-            text-align: center;
-            padding: 20px 10px; /* Padding for space around the logo */
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        header img {
-            width: 100px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        header h2 {
-            margin: 10px 0 0 0;
-            font-size: 20px;
-        }
-
-        /* Footer */
-        footer {
-            padding: 10px 20px;
-            background-color: black;
-            color: white;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        /* Filter button within main content */
+        /* Filter button */
         #filterButton {
             padding: 10px 40px;
             background-color: darkred;
@@ -105,12 +59,9 @@
             font-size: 16px;
             border-radius: 5px;
             margin-bottom: 20px;
-            justify-content: center;
-            align-items: center;
-            padding-left: 50%;
         }
 
-        /* Popup modal box styling within main content */
+        /* Filter modal styling */
         #filterModal {
             display: none;
             position: fixed;
@@ -125,149 +76,268 @@
             z-index: 1000;
         }
 
-        /* Modal header */
-        #filterModal h3 {
-            color: darkred;
-            margin-top: 0;
-        }
-
-        /* Dropdown styling */
-        .filter-option {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: black;
-        }
-
-        select {
+        table {
             width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        /* Update button */
-        #updateButton {
-            padding: 10px;
-            width: 100%;
+        th, td {
+            text-align: left;
+            padding: 15px;
+        }
+
+        th {
             background-color: darkred;
             color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
         }
 
-        /* Overlay for modal background */
+        tr:nth-child(even) {
+            background-color: #f8d7da; /* Light red */
+        }
+
+        tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        tr:hover {
+            background-color: #ffe5e9; /* Hover effect */
+        }
+
         #overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 500;
+            z-index: 999;
         }
 
+        .album-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-header {
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid black;
+            text-align: left;
+        }
+
+        .dropdown-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-top: none;
+            background-color: #f9f9f9;
+        }
+
+        select {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: white;
+            color: black;
+        }
+        
     </style>
 </head>
 <body>
-
-    <!-- Sidebar -->
     <nav>
+        <div class="logo-section">
+            <img src="\images\logo-white.png" alt="Logo">
+            <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
+        </div>
+        <!-- Sidebar -->
         <a href="main.html">Home</a>
         <a href="page2.html">Featured Songs</a>
         <a href="page3.html">About Us</a>
-        <a href="page4.html">Bonus Songs</a>
-        <a href="search.html">Search</a>
+        <a href="page4.html">Discover Artists!</a>
+        <a href="search.html">Discover songs!</a>
     </nav>
-    
-    <!-- Main content -->
+
     <div class="main-content">
-        <!-- Filter Button -->
         <button id="filterButton">Discover!</button>
-    
-        <!-- Modal and Overlay -->
         <div id="overlay"></div>
         <div id="filterModal">
             <h3>Filter Options</h3>
             <div>
                 <label for="genre">Filter by Genre</label>
                 <select id="genre">
-                    <option value="random">Random</option>
-                    <option value="rock">Rock</option>
-                    <option value="rap">Rap</option>
-                    <option value="classic">Classic</option>
-                    <option value="pop">Pop</option>
-                    <option value="country">Country</option>
+                    <option value="random">All</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Hip Hop">Hip Hop</option>
+                    <option value="Country">Country</option>
+                    <option value="Jazz">Jazz</option>
                 </select>
             </div>
             <div>
                 <label for="artist">Filter by Artist</label>
                 <select id="artist">
-                    <option value="random">Random</option>
-                    <option value="artist1">Artist 1</option>
-                    <option value="artist2">Artist 2</option>
-                    <option value="artist3">Artist 3</option>
+                    <option value="random">All</option>
+                    <option value="Michael Jackson">Michael Jackson</option>
+                    <option value="Tina Turner">Tina Turner</option>
+                    <option value="Lady Gaga">Lady Gaga</option>
+                    <option value="Stevie Wonder">Stevie Wonder</option>
+                    <option value="Prince">Prince</option>
+                    <option value="Nirvana">Nirvana</option>
+                    <option value="The Beatles">The Beatles</option>
+                    <option value="Pink Floyd">Pink Floyd</option>
+                    <option value="Led Zeppelin">Led Zeppelin</option>
+                    <option value="The Rolling Stones">The Rolling Stones</option>
+                    <option value="Bo Burnham">Bo Burnham</option>
+                    <option value="Eminem">Eminem</option>
+                    <option value="Wu-Tang Clan">Wu-Tang Clan</option>
+                    <option value="Kanye West">Kanye West</option>
+                    <option value="Dolly Parton">Dolly Parton</option>
+                    <option value="Willie Nelson">Willie Nelson</option>
+                    <option value="Waylon Jennings">Waylon Jennings</option>
+                    <option value="Nitty Gritty Dirt Band">Nitty Gritty Dirt Band</option>
+                    <option value="Brooks & Dunn">Brooks & Dunn</option>
+                    <option value="Art Tatum">Art Tatum</option>
+                    <option value="John Coltrane">John Coltrane</option>
+                    <option value="Bob Dylan">Bob Dylan</option>
+                    <option value="Miles Davis">Miles Davis</option>
+
                 </select>
             </div>
+
+            <div>
+                <label for="album">Filter by Album</label>
+                <select id="album">
+                    <option value="random">All</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Private Dancer">Private Dancer</option>
+                    <option value="The Fame Monster">The Fame Monster</option>
+                    <option value="Songs in the Key of Life">Songs in the Key of Life</option>
+                    <option value="Purple Rain">Purple Rain</option>
+                    <option value="Nevermind">Nevermind</option>
+                    <option value="Revolver">Revolver</option>
+                    <option value="Dark Side Of The Moon">Dark Side Of The Moon</option>
+                    <option value="Led Zeppelin IV">Led Zeppelin IV</option>
+                    <option value="It\'s Only Rock \'n\">It\'s Only Rock \'n\</option>
+                    <option value="All Eyez On Me">All Eyez On Me</option>
+                    <option value="The Eminem Show">The Eminem Show</option>
+                    <option value="Enter the Wu-Tang">Enter the Wu-Tang</option>
+                    <option value="The College Dropout">The College Dropout</option>
+                    <option value="My Beautiful Dark Twisted Fantasy">My Beautiful Dark Twisted Fantasy</option>
+                    <option value="Coat Of Many Colors">Coat Of Many Colors</option>
+                    <option value="Red Headed Stranger">Red Headed Stranger</option>
+                    <option value="Honky Tonk Heroes">Honky Tonk Heroes</option>
+                    <option value="Will The Circle Be Unbroken">Will The Circle Be Unbroken</option>
+                    <option value="Hillbilly Deluxe">Hillbilly Deluxe</option>
+                    <option value="Piano Starts Here">Piano Starts Here</option>
+                    <option value="Blue Train">Blue Train</option>
+                    <option value="Time Out">Time Out</option>
+                    <option value="Love Supreme">Love Supreme</option>
+                    <option value="Kind of Blue">Kind of Blue</option>
+                </select>
+            </div>
+
             <button id="updateButton">Update</button>
         </div>
     </div>
-    
+
     <script>
-        updateButton.addEventListener('click', async () => {
-            const selectedGenre = document.getElementById('genre').value;
-            const selectedArtist = document.getElementById('artist').value;
-        
-            console.log("Selected Genre:", selectedGenre);
-            console.log("Selected Artist:", selectedArtist);
-        
-            // Simulate fetching data
-            try {
-                const response = await fetch('http://localhost:3000/filter', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ genre: selectedGenre, artist: selectedArtist })
-                });
-        
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-        
-                const data = await response.json();
-                populateTable(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                // Optionally display an error message to the user
-            } finally {
-                closeFilterModal();
-            }
+        const filterButton = document.getElementById('filterButton');
+        const filterModal = document.getElementById('filterModal');
+        const overlay = document.getElementById('overlay');
+        const updateButton = document.getElementById('updateButton');
+
+        // Show the modal
+        filterButton.addEventListener('click', () => {
+            filterModal.style.display = 'block';
+            overlay.style.display = 'block';
         });
-        
-        // Close filter modal
-        function closeFilterModal() {
+
+        // Close the modal
+        overlay.addEventListener('click', () => {
             filterModal.style.display = 'none';
             overlay.style.display = 'none';
+        });
+
+        // Fetch and display data
+        updateButton.addEventListener('click', async () => {
+    const selectedGenre = document.getElementById('genre').value;
+    const selectedArtist = document.getElementById('artist').value;
+    const selectedAlbum = document.getElementById('album').value;
+
+    try {
+        const response = await fetch('http://localhost:3000/filter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ genre: selectedGenre, artist: selectedArtist, album: selectedAlbum })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+        populateTable(data);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        filterModal.style.display = 'none';
+        overlay.style.display = 'none';
+    }
+});
+
+
+        async function populateDropdowns() {
+            try {
+                // Fetch artists
+                const artistResponse = await fetch('http://localhost:3000/artists');
+                const artists = await artistResponse.json();
+                const artistDropdown = document.getElementById('artist');
+                artistDropdown.innerHTML = '<option value="random">All</option>'; // Reset dropdown
+                artists.forEach(artist => {
+                    const option = document.createElement('option');
+                    option.value = artist;
+                    option.textContent = artist;
+                    artistDropdown.appendChild(option);
+                });
+        
+                // Fetch albums
+                const albumResponse = await fetch('http://localhost:3000/albums');
+                const albums = await albumResponse.json();
+                const albumDropdown = document.getElementById('album');
+                albumDropdown.innerHTML = '<option value="random">All</option>'; // Reset dropdown
+                albums.forEach(album => {
+                    const option = document.createElement('option');
+                    option.value = album;
+                    option.textContent = album;
+                    albumDropdown.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error populating dropdowns:', error);
+            }
         }
         
-        // Populate table with fetched data
+
         function populateTable(data) {
             const mainContent = document.querySelector('.main-content');
             const oldTable = document.getElementById('resultsTable');
             if (oldTable) oldTable.remove();
-        
+
             const table = document.createElement('table');
             table.id = 'resultsTable';
-        
-            // Table headers
-            const headers = ['ID', 'Title', 'Genre', 'Artist'];
+
+            const headers = ['ID', 'Title', 'Album', 'Genre', 'Artist', 'Likes', 'Action'];
             const headerRow = document.createElement('tr');
             headers.forEach(header => {
                 const th = document.createElement('th');
@@ -275,33 +345,46 @@
                 headerRow.appendChild(th);
             });
             table.appendChild(headerRow);
-        
-            // Table rows
+
             data.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${row.id}</td>
                     <td>${row.title}</td>
+                    <td>${row.album}</td>
                     <td>${row.genre}</td>
                     <td>${row.artist}</td>
+                    <td>${row.song_likes}</td>
+                    <td><button onclick="likeSong(${row.id})">Like</button></td>
                 `;
                 table.appendChild(tr);
             });
-        
+
             mainContent.appendChild(table);
         }
-        
-        // Showing the modal
-        filterButton.addEventListener('click', () => {
-            filterModal.style.display = 'block';
-            overlay.style.display = 'block';
-        });
-        
+
+        async function likeSong(songId) {
+            try {
+                const response = await fetch('http://localhost:3000/like/song', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ song_id: songId })
+                });
+
+                if (response.ok) {
+                    alert('Song liked!');
+                } else {
+                    alert('Failed to like song.');
+                }
+            } catch (error) {
+                console.error('Error liking song:', error);
+            }
+        }
     </script>
-    
+
     <footer>
         <p>Copyright &copy; 2024 All Rights Reserved - <span>Jukeboxed LLC</span></p>
     </footer>
-    
-    </body>
-    </html>
+</body>
+</html>
+

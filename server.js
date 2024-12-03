@@ -10,45 +10,139 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// MySQL Connection
+// Database Connection
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '646Wyo0%', 
-    database: 'jukeboxed' 
+    password: '646Wyo0%', // Ensure this is secure
+    database: 'jukeboxed'
 });
 
 db.connect(err => {
     if (err) {
-        console.error('Database connection failed:', err);
-    } else {
-        console.log('Connected to database');
+        console.error('Database connection failed:', err.stack);
+        return;
     }
+    console.log('Connected to database');
 });
 
-// API Endpoint for filtering songs
-app.post('/filter', (req, res) => {
-    const { genre, artist } = req.body;
+// Utility for error responses
+const sendErrorResponse = (res, message, error) => {
+    console.error(message, error.stack);
+    res.status(500).json({ success: false, message, error: error.message });
+};
 
-    let query = 'SELECT * FROM songs WHERE 1=1';
+// Retrieve filtered data
+app.post('/filter', (req, res) => {
+    const { genre, artist, album } = req.body;
+
+    let query = `
+        SELECT 
+            songs.song_id AS id, 
+            songs.song_title AS title, 
+            albums.album_title AS album,
+            genres.genre_name AS genre, 
+            artists.artist_name AS artist,
+            songs.like_count AS song_likes
+        FROM songs
+        LEFT JOIN albums ON songs.album_id = albums.album_id
+        LEFT JOIN genres ON albums.genre_id = genres.genre_id
+        LEFT JOIN artists ON songs.artist_id = artists.artist_id
+        WHERE 1=1
+    `;
     const params = [];
 
     if (genre && genre !== 'random') {
-        query += ' AND genre = ?';
+        query += ' AND genres.genre_name = ?';
         params.push(genre);
     }
-
     if (artist && artist !== 'random') {
-        query += ' AND artist = ?';
+        query += ' AND artists.artist_name = ?';
         params.push(artist);
+    }
+    if (album && album !== 'random') {
+        query += ' AND albums.album_title = ?';
+        params.push(album);
     }
 
     db.query(query, params, (err, results) => {
         if (err) {
-            console.error('Error executing query:', err);
-            res.status(500).send('Error fetching data');
+            sendErrorResponse(res, 'Error retrieving filtered data', err);
         } else {
-            res.json(results);
+            res.json({ success: true, data: results });
+        }
+    });
+});
+
+// Increment like count for a song
+app.post('/like/song', (req, res) => {
+    const { song_id } = req.body;
+
+    const query = `UPDATE songs SET like_count = like_count + 1 WHERE song_id = ?`;
+    db.query(query, [song_id], (err, results) => {
+        if (err) {
+            sendErrorResponse(res, 'Error updating like count for song', err);
+        } else {
+            res.json({ success: true, message: 'Song liked successfully', affectedRows: results.affectedRows });
+        }
+    });
+});
+
+// Get unique artist names
+app.get('/artists', (req, res) => {
+    const query = 'SELECT DISTINCT artist_id, artist_name FROM artists ORDER BY artist_name ASC';
+    db.query(query, (err, results) => {
+        if (err) {
+            sendErrorResponse(res, 'Error retrieving artists', err);
+        } else {
+            res.json({ success: true, data: results });
+        }
+    });
+});
+
+// Get unique album titles
+app.get('/albums', (req, res) => {
+    const query = 'SELECT DISTINCT album_id, album_title FROM albums ORDER BY album_title ASC';
+    db.query(query, (err, results) => {
+        if (err) {
+            sendErrorResponse(res, 'Error retrieving albums', err);
+        } else {
+            res.json({ success: true, data: results });
+        }
+    });
+});
+
+// Increment like count for an album
+app.post('/like/album', (req, res) => {
+    const { album_id } = req.body;
+
+    const query = `UPDATE albums SET like_count = like_count + 1 WHERE album_id = ?`;
+    db.query(query, [album_id], (err, results) => {
+        if (err) {
+            sendErrorResponse(res, 'Error updating like count for album', err);
+        } else {
+            res.json({ success: true, message: 'Album liked successfully', affectedRows: results.affectedRows });
+        }
+    });
+});
+
+// Retrieve artists and their albums
+app.get('/artists/discovery', (req, res) => {
+    const query = `
+        SELECT 
+            artists.artist_name AS artist,
+            artists.wikipedia_link AS wikipedia_link,
+            COALESCE(albums.album_title, 'No albums available') AS album
+        FROM artists
+        LEFT JOIN albums ON artists.artist_id = albums.artist_id
+        ORDER BY artists.artist_name ASC;
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            sendErrorResponse(res, 'Error retrieving artists and albums', err);
+        } else {
+            res.json({ success: true, data: results });
         }
     });
 });
