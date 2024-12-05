@@ -358,7 +358,7 @@
             const table = document.createElement('table');
             table.id = 'resultsTable';
         
-            const headers = ['ID', 'Title', 'Album', 'Genre', 'Artist', 'Likes', 'Play Audio'];
+            const headers = ['ID', 'Title', 'Album', 'Genre', 'Artist', 'Likes', 'Play Video'];
             const headerRow = document.createElement('tr');
             headers.forEach(header => {
                 const th = document.createElement('th');
@@ -369,16 +369,19 @@
         
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                tr.setAttribute('data-id', row.id); // Add a unique identifier to the row
+        
                 const audioButton = row.youtube_link
-                    ? `<button onclick="playAudio('${row.youtube_link}')">Play Audio</button>`
+                    ? `<button onclick="playAudio('${row.youtube_link}')">Play Video</button>`
                     : 'No link available';
+        
                 tr.innerHTML = `
                     <td>${row.id}</td>
                     <td>${row.title}</td>
                     <td>${row.album}</td>
                     <td>${row.genre}</td>
                     <td>${row.artist}</td>
-                    <td>${row.song_likes}<button onclick="likeSong(${row.id})">Like</button></td>
+                    <td class="like-count">${row.song_likes} <button onclick="likeSong(${row.id})">Like</button></td>
                     <td>${audioButton}</td>
                 `;
                 table.appendChild(tr);
@@ -422,6 +425,7 @@
         // Like a song
         async function likeSong(songId) {
             try {
+                // Send the like request to the server
                 const response = await fetch('http://localhost:3000/like/song', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -429,16 +433,27 @@
                 });
         
                 if (response.ok) {
-                    alert('Song liked!');
-                    const updatedData = await fetchUpdatedData(); // Function to refetch the data
-                    populateTable(updatedData);
+                    // If successful, get the updated like count from the backend
+                    const updatedCountResponse = await fetch(`http://localhost:3000/song/${songId}`);
+                    if (!updatedCountResponse.ok) throw new Error("Failed to fetch updated like count");
+        
+                    const updatedSong = await updatedCountResponse.json();
+        
+                    // Update the like count in the table dynamically
+                    const likeCell = document.querySelector(`tr[data-id='${songId}'] .like-count`);
+                    if (likeCell) {
+                        likeCell.textContent = updatedSong.song_likes; // Update the count in the DOM
+                    }
+        
+                    alert("Song liked!");
                 } else {
-                    alert('Failed to like song.');
+                    alert("Failed to like song.");
                 }
             } catch (error) {
                 console.error('Error liking song:', error);
             }
         }
+        
         
         // Fetch updated data
         async function fetchUpdatedData() {

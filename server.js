@@ -70,6 +70,31 @@ app.post('/filter', (req, res) => {
     });
 });
 
+// Get a specific song by ID
+app.get('/song/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `
+        SELECT 
+            song_id AS id, 
+            song_title AS title, 
+            like_count AS song_likes 
+        FROM songs 
+        WHERE song_id = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Error fetching song by ID:', err.stack);
+            res.status(500).send('Error retrieving song data');
+        } else if (results.length === 0) {
+            res.status(404).send('Song not found');
+        } else {
+            res.json(results[0]);
+        }
+    });
+});
+
+
 // Increment like count for a song
 app.post('/like/song', (req, res) => {
     const { song_id } = req.body;
