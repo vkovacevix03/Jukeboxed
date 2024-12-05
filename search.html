@@ -17,8 +17,8 @@
             min-height: 100vh; /* Full viewport height */
         }
 
-        /* Sidebar style */
-        nav {
+         /* Sidebar style from previous code */
+         nav {
             width: 200px;
             background-color: black;
             color: white;
@@ -27,6 +27,18 @@
             position: fixed;
             height: 100%;
             padding-top: 20px;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        nav .logo-section img {
+            width: 60px;
+            height: auto;
+            margin-right: 10px;
         }
 
         nav a {
@@ -39,6 +51,12 @@
 
         nav a:hover {
             background-color: darkred;
+        }
+
+        img {
+            width: 100%;
+            height: 200px; /* Set a fixed height for all images */
+            object-fit: cover; /* Ensures images cover the area and keep aspect ratio */
         }
 
         /* Main content */
@@ -162,13 +180,32 @@
             bottom: 0;
             left: 0;
         }
+
+        header {
+            background-color: darkred;
+            text-align: center;
+            padding: 20px 10px; /* Padding for space around the logo */
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        header img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            margin: 10px 0 0 0;
+            font-size: 20px;
+        }
         
     </style>
 </head>
 <body>
     <nav>
         <div class="logo-section">
-            <img src="\logo-white.png" alt="Logo">
+            <img src="\jukeboxed\logo-white.png" alt="Logo">
             <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
         </div>
         <!-- Sidebar -->
@@ -180,6 +217,10 @@
     </nav>
 
     <div class="main-content">
+            <header>
+                <img src="jukeboxed\logo-white.png" alt="Logo">
+                <h2>Discover New music</h2>
+            </header>
         <button id="filterButton">Discover!</button>
         <div id="overlay"></div>
         <div id="filterModal">
@@ -267,87 +308,57 @@
         const filterModal = document.getElementById('filterModal');
         const overlay = document.getElementById('overlay');
         const updateButton = document.getElementById('updateButton');
-
+        let audioPlayer;
+        
         // Show the modal
         filterButton.addEventListener('click', () => {
             filterModal.style.display = 'block';
             overlay.style.display = 'block';
         });
-
+        
         // Close the modal
         overlay.addEventListener('click', () => {
             filterModal.style.display = 'none';
             overlay.style.display = 'none';
         });
-
-        // Fetch and display data
+        
+        // Fetch and display data when "Update" is clicked
         updateButton.addEventListener('click', async () => {
-    const selectedGenre = document.getElementById('genre').value;
-    const selectedArtist = document.getElementById('artist').value;
-    const selectedAlbum = document.getElementById('album').value;
-
-    try {
-        const response = await fetch('http://localhost:3000/filter', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ genre: selectedGenre, artist: selectedArtist, album: selectedAlbum })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch data');
-        }
-
-        const data = await response.json();
-        populateTable(data);
-    } catch (error) {
-        console.error(error);
-    } finally {
-        filterModal.style.display = 'none';
-        overlay.style.display = 'none';
-    }
-});
-
-
-        async function populateDropdowns() {
+            const selectedGenre = document.getElementById('genre').value;
+            const selectedArtist = document.getElementById('artist').value;
+            const selectedAlbum = document.getElementById('album').value;
+        
             try {
-                // Fetch artists
-                const artistResponse = await fetch('http://localhost:3000/artists');
-                const artists = await artistResponse.json();
-                const artistDropdown = document.getElementById('artist');
-                artistDropdown.innerHTML = '<option value="random">All</option>'; // Reset dropdown
-                artists.forEach(artist => {
-                    const option = document.createElement('option');
-                    option.value = artist;
-                    option.textContent = artist;
-                    artistDropdown.appendChild(option);
+                const response = await fetch('http://localhost:3000/filter', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ genre: selectedGenre, artist: selectedArtist, album: selectedAlbum })
                 });
         
-                // Fetch albums
-                const albumResponse = await fetch('http://localhost:3000/albums');
-                const albums = await albumResponse.json();
-                const albumDropdown = document.getElementById('album');
-                albumDropdown.innerHTML = '<option value="random">All</option>'; // Reset dropdown
-                albums.forEach(album => {
-                    const option = document.createElement('option');
-                    option.value = album;
-                    option.textContent = album;
-                    albumDropdown.appendChild(option);
-                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+        
+                const data = await response.json();
+                populateTable(data);
             } catch (error) {
-                console.error('Error populating dropdowns:', error);
+                console.error(error);
+            } finally {
+                filterModal.style.display = 'none';
+                overlay.style.display = 'none';
             }
-        }
+        });
         
-
+        // Populate the table with data from the backend
         function populateTable(data) {
             const mainContent = document.querySelector('.main-content');
             const oldTable = document.getElementById('resultsTable');
             if (oldTable) oldTable.remove();
-
+        
             const table = document.createElement('table');
             table.id = 'resultsTable';
-
-            const headers = ['ID', 'Title', 'Album', 'Genre', 'Artist', 'Likes', 'Action'];
+        
+            const headers = ['ID', 'Title', 'Album', 'Genre', 'Artist', 'Likes', 'Play Audio'];
             const headerRow = document.createElement('tr');
             headers.forEach(header => {
                 const th = document.createElement('th');
@@ -355,24 +366,60 @@
                 headerRow.appendChild(th);
             });
             table.appendChild(headerRow);
-
+        
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                const audioButton = row.youtube_link
+                    ? `<button onclick="playAudio('${row.youtube_link}')">Play Audio</button>`
+                    : 'No link available';
                 tr.innerHTML = `
                     <td>${row.id}</td>
                     <td>${row.title}</td>
                     <td>${row.album}</td>
                     <td>${row.genre}</td>
                     <td>${row.artist}</td>
-                    <td>${row.song_likes}</td>
-                    <td><button onclick="likeSong(${row.id})">Like</button></td>
+                    <td>${row.song_likes}<button onclick="likeSong(${row.id})">Like</button></td>
+                    <td>${audioButton}</td>
                 `;
                 table.appendChild(tr);
             });
-
+        
             mainContent.appendChild(table);
         }
-
+        
+        // Play YouTube audio
+        function playAudio(link) {
+            // Extract the YouTube video ID from the link
+            const videoId = new URL(link).searchParams.get("v");
+            if (!videoId) {
+                alert("Invalid YouTube link");
+                return;
+            }
+        
+            // Stop the current audio if one is already playing
+            stopAudio();
+        
+            // Create a new hidden iframe to play the audio
+            const iframe = document.createElement("iframe");
+            iframe.width = 0; // Hide the iframe
+            iframe.height = 0;
+            iframe.style.display = "none"; // Completely hide it from view
+            iframe.allow = "autoplay"; // Allow autoplay
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&modestbranding=1`;
+        
+            document.body.appendChild(iframe);
+            audioPlayer = iframe; // Store the iframe reference for stopping later
+        }
+        
+        // Stop audio playback
+        function stopAudio() {
+            if (audioPlayer) {
+                audioPlayer.remove(); // Remove the iframe from the DOM
+                audioPlayer = null; // Clear the reference
+            }
+        }
+        
+        // Like a song
         async function likeSong(songId) {
             try {
                 const response = await fetch('http://localhost:3000/like/song', {
@@ -380,9 +427,11 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ song_id: songId })
                 });
-
+        
                 if (response.ok) {
                     alert('Song liked!');
+                    const updatedData = await fetchUpdatedData(); // Function to refetch the data
+                    populateTable(updatedData);
                 } else {
                     alert('Failed to like song.');
                 }
@@ -390,6 +439,13 @@
                 console.error('Error liking song:', error);
             }
         }
+        
+        // Fetch updated data
+        async function fetchUpdatedData() {
+            const response = await fetch('http://localhost:3000/songs'); // Adjust endpoint as needed
+            return response.json();
+        }
+        
     </script>
 
     <footer>

@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '646Wyo0%', // Ensure this is secure
+    password: '646Wyo0%',  
     database: 'jukeboxed'
 });
 
@@ -25,12 +25,6 @@ db.connect(err => {
     }
     console.log('Connected to database');
 });
-
-// Utility for error responses
-const sendErrorResponse = (res, message, error) => {
-    console.error(message, error.stack);
-    res.status(500).json({ success: false, message, error: error.message });
-};
 
 // Retrieve filtered data
 app.post('/filter', (req, res) => {
@@ -43,7 +37,8 @@ app.post('/filter', (req, res) => {
             albums.album_title AS album,
             genres.genre_name AS genre, 
             artists.artist_name AS artist,
-            songs.like_count AS song_likes
+            songs.like_count AS song_likes,
+            songs.youtube_link AS youtube_link
         FROM songs
         LEFT JOIN albums ON songs.album_id = albums.album_id
         LEFT JOIN genres ON albums.genre_id = genres.genre_id
@@ -67,9 +62,10 @@ app.post('/filter', (req, res) => {
 
     db.query(query, params, (err, results) => {
         if (err) {
-            sendErrorResponse(res, 'Error retrieving filtered data', err);
+            console.error('Error executing query:', err.stack);
+            res.status(500).send('Error retrieving data');
         } else {
-            res.json({ success: true, data: results });
+            res.json(results);
         }
     });
 });
@@ -81,33 +77,36 @@ app.post('/like/song', (req, res) => {
     const query = `UPDATE songs SET like_count = like_count + 1 WHERE song_id = ?`;
     db.query(query, [song_id], (err, results) => {
         if (err) {
-            sendErrorResponse(res, 'Error updating like count for song', err);
+            console.error('Error updating like count for song:', err.stack);
+            res.status(500).send('Error updating like count');
         } else {
-            res.json({ success: true, message: 'Song liked successfully', affectedRows: results.affectedRows });
+            res.send({ success: true, message: 'liked gladly!' });
         }
     });
 });
 
 // Get unique artist names
 app.get('/artists', (req, res) => {
-    const query = 'SELECT DISTINCT artist_id, artist_name FROM artists ORDER BY artist_name ASC';
+    const query = 'SELECT DISTINCT artist_name FROM artists ORDER BY artist_name ASC';
     db.query(query, (err, results) => {
         if (err) {
-            sendErrorResponse(res, 'Error retrieving artists', err);
+            console.error('Error retrieving artists:', err.stack);
+            res.status(500).send('Error retrieving artists');
         } else {
-            res.json({ success: true, data: results });
+            res.json(results.map(row => row.artist_name));
         }
     });
 });
 
 // Get unique album titles
 app.get('/albums', (req, res) => {
-    const query = 'SELECT DISTINCT album_id, album_title FROM albums ORDER BY album_title ASC';
+    const query = 'SELECT DISTINCT album_title FROM albums ORDER BY album_title ASC';
     db.query(query, (err, results) => {
         if (err) {
-            sendErrorResponse(res, 'Error retrieving albums', err);
+            console.error('Error retrieving albums:', err.stack);
+            res.status(500).send('Error retrieving albums');
         } else {
-            res.json({ success: true, data: results });
+            res.json(results.map(row => row.album_title));
         }
     });
 });
@@ -119,9 +118,10 @@ app.post('/like/album', (req, res) => {
     const query = `UPDATE albums SET like_count = like_count + 1 WHERE album_id = ?`;
     db.query(query, [album_id], (err, results) => {
         if (err) {
-            sendErrorResponse(res, 'Error updating like count for album', err);
+            console.error('Error updating like count for album:', err.stack);
+            res.status(500).send('Error updating like count');
         } else {
-            res.json({ success: true, message: 'Album liked successfully', affectedRows: results.affectedRows });
+            res.send({ success: true, message: 'Album liked successfully' });
         }
     });
 });
@@ -132,7 +132,7 @@ app.get('/artists/discovery', (req, res) => {
         SELECT 
             artists.artist_name AS artist,
             artists.wikipedia_link AS wikipedia_link,
-            COALESCE(albums.album_title, 'No albums available') AS album
+            albums.album_title AS album
         FROM artists
         LEFT JOIN albums ON artists.artist_id = albums.artist_id
         ORDER BY artists.artist_name ASC;
@@ -140,9 +140,10 @@ app.get('/artists/discovery', (req, res) => {
 
     db.query(query, (err, results) => {
         if (err) {
-            sendErrorResponse(res, 'Error retrieving artists and albums', err);
+            console.error('Error retrieving artists and albums:', err.stack);
+            res.status(500).send('Error retrieving data');
         } else {
-            res.json({ success: true, data: results });
+            res.json(results);
         }
     });
 });
