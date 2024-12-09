@@ -371,10 +371,8 @@
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-id', row.id); // Add a unique identifier to the row
         
-                const audioButton = row.youtube_link
-                    ? `<button onclick="playAudio('${row.youtube_link}')">Play Video</button>`
-                    : 'No link available';
-        
+                const audioButton = `<button onclick="playAudio()">Play</button>`;
+
                 tr.innerHTML = `
                     <td>${row.id}</td>
                     <td>${row.title}</td>
@@ -391,37 +389,33 @@
         }
         
         // Play YouTube audio
-        function playAudio(link) {
-            // Extract the YouTube video ID from the link
-            const videoId = new URL(link).searchParams.get("v");
-            if (!videoId) {
-                alert("Invalid YouTube link");
-                return;
-            }
-        
-            // Stop the current audio if one is already playing
-            stopAudio();
-        
-            // Create a new hidden iframe to play the audio
-            const iframe = document.createElement("iframe");
-            iframe.width = 0; // Hide the iframe
-            iframe.height = 0;
-            iframe.style.display = "none"; // Completely hide it from view
-            iframe.allow = "autoplay"; // Allow autoplay
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&modestbranding=1`;
-        
-            document.body.appendChild(iframe);
-            audioPlayer = iframe; // Store the iframe reference for stopping later
-        }
-        
-        // Stop audio playback
-        function stopAudio() {
-            if (audioPlayer) {
-                audioPlayer.remove(); // Remove the iframe from the DOM
-                audioPlayer = null; // Clear the reference
-            }
-        }
-        
+        let audioElement; // Audio element reference
+
+function playAudio() { const audioFilePath = 'Michael Jackson - Wanna Be Startin Somethin (Audio).mp3';
+
+    // If the audio element does not exist, create it
+    if (!audioElement) {
+        audioElement = document.createElement('audio');
+        audioElement.src = audioFilePath;
+        audioElement.controls = true; // Enable controls (play, pause, stop)
+        audioElement.style.position = 'fixed';
+        audioElement.style.bottom = '20px';
+        audioElement.style.left = '20px';
+        audioElement.style.zIndex = 1000;
+        document.body.appendChild(audioElement);
+    }
+
+    // Play the audio
+    audioElement.play();
+
+    // Show the audio controller
+    audioElement.style.display = 'block';
+
+    // Pause any currently playing audio before starting the new one
+    audioElement.addEventListener('ended', () => {
+        audioElement.style.display = 'none'; // Hide controller when audio ends
+    });
+}
         // Like a song
         async function likeSong(songId) {
             try {
