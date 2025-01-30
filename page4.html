@@ -27,18 +27,23 @@
             position: fixed;
             height: 100%;
             padding-top: 20px;
+            transition:transform .5s;
         }
 
         nav .logo-section {
             display: flex;
             align-items: center;
             padding: 10px;
+            transition:transform .5s;
+
         }
 
         nav .logo-section img {
             width: 60px;
             height: auto;
             margin-right: 10px;
+            transition:transform .5s;
+
         }
 
         nav a {
@@ -47,9 +52,17 @@
             text-decoration: none;
             color: white;
             display: block;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section :hover{
+            transform: translateY(-10px);
+            background-color:darkred;
         }
 
         nav a:hover {
+            transform: translateY(-10px);
             background-color: darkred;
         }
 
@@ -142,8 +155,8 @@
     <a href="main.html">Home</a>
     <a href="page2.html">Featured Songs</a>
     <a href="page3.html">About Us</a>
-    <a href="search.html">Discover Songs!</a>
     <a href="page4.html">Discover Artists</a>
+    <a href="search.html">Discover Songs!</a>
 </nav>
 
 <!-- Main content -->

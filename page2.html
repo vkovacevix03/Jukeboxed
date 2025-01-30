@@ -17,24 +17,29 @@
         nav {
             width: 200px;
             background-color: black;
-            color: black;
+            color: white;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100%;
             padding-top: 20px;
+            transition:transform .5s;
         }
 
         nav .logo-section {
             display: flex;
             align-items: center;
             padding: 10px;
+            transition:transform .5s;
+
         }
 
         nav .logo-section img {
             width: 60px;
             height: auto;
             margin-right: 10px;
+            transition:transform .5s;
+
         }
 
         nav a {
@@ -43,11 +48,21 @@
             text-decoration: none;
             color: white;
             display: block;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section :hover{
+            transform: translateY(-10px);
+            background-color:darkred;
         }
 
         nav a:hover {
+            transform: translateY(-10px);
             background-color: darkred;
         }
+
+
        .gallery-container a:hover {
             background-color: darkred;
         }
@@ -112,7 +127,7 @@
 
 <nav>
     <div class="logo-section">
-        <img src="\images\logo-white.png" alt="Logo" href="main.html">
+        <img src="jukeboxed\logo-white.png" alt="Logo" href="main.html">
         <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
     </div>
     <a href="main.html">Home</a>

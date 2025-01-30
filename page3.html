@@ -44,18 +44,23 @@
             position: fixed;
             height: 100%;
             padding-top: 20px;
+            transition:transform .5s;
         }
 
         nav .logo-section {
             display: flex;
             align-items: center;
             padding: 10px;
+            transition:transform .5s;
+
         }
 
         nav .logo-section img {
             width: 60px;
             height: auto;
             margin-right: 10px;
+            transition:transform .5s;
+
         }
 
         nav a {
@@ -64,9 +69,17 @@
             text-decoration: none;
             color: white;
             display: block;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section :hover{
+            transform: translateY(-10px);
+            background-color:darkred;
         }
 
         nav a:hover {
+            transform: translateY(-10px);
             background-color: darkred;
         }
 

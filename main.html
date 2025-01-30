@@ -1,143 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="main_css.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Jukeboxed</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Full viewport height */
-        }
-
-        /* Sidebar style */
-        nav {
-            width: 200px;
-            background-color: black;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100%;
-            padding-top: 20px;
-        }
-
-        nav .logo-section {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-        }
-
-        nav .logo-section img {
-            width: 60px;
-            height: auto;
-            margin-right: 10px;
-        }
-
-        nav a {
-            padding: 15px;
-            text-align: left;
-            text-decoration: none;
-            color: white;
-            display: block;
-        }
-
-        nav a:hover {
-            background-color: darkred;
-        }
-
-        /* Main content */
-        .main-content {
-            margin-left: 200px; /* Account for sidebar width */
-            padding: 20px;
-            flex: 1;
-            background-color: #f0f0f0;
-        }
-
-        /* Header with logo */
-        header {
-            background-color: darkred;
-            text-align: center;
-            padding: 20px 10px; /* Padding for space around the logo */
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        header img {
-            width: 100px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        header h2 {
-            margin: 10px 0 0 0;
-            font-size: 20px;
-        }
-
-        /* Article content */
-        article {
-            padding: 20px;
-            background-color: #f1f1f1;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            line-height: 1.6;
-        }
-
-        article p {
-            margin-bottom: 15px;
-        }
-
-        /* Footer */
-        footer {
-            padding: 5px 20px; /* Reduce padding to make it less tall */
-            background-color: black;
-            color: white;
-            text-align: center;
-            width: 100%;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-        }
-
-        /* Gallery layout */
-        .gallery-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns */
-            gap: 10px;
-            margin-top: 20px;
-            padding-bottom: 90px;
-        }
-
-        .gallery {
-            border: 1px solid #ccc;
-        }
-
-        .gallery img {
-            width: 100%;
-            height: auto;
-        }
-        div.gallery img {
-            width: 100%;
-            height: 300px; /* Set a fixed height for all images */
-            object-fit: cover; /* Ensures images cover the area and keep aspect ratio */
-        }
-
-        .gallery .desc {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .gallery:hover {
-            border-color: #777;
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -147,13 +15,15 @@
         <img src="jukeboxed\logo-white.png" alt="Logo">
         <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
     </div>
+    <div id="nav_links">
     <a href="main.html">Home</a>
     <a href="page2.html">Featured Songs</a>
     <a href="page3.html">About Us</a>
     <a href="page4.html">Discover Artists</a>
     <a href="search.html">Discover Songs!</a>
-
+</div>
 </nav>
+
 
 <!-- Main content -->
 <div class="main-content">
