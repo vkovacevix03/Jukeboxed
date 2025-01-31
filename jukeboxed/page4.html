@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Jukeboxed</title>
+    <title>Artist Discovery - Jukeboxed</title>
     <style>
         * {
             box-sizing: border-box;
@@ -27,18 +27,23 @@
             position: fixed;
             height: 100%;
             padding-top: 20px;
+            transition:transform .5s;
         }
 
         nav .logo-section {
             display: flex;
             align-items: center;
             padding: 10px;
+            transition:transform .5s;
+
         }
 
         nav .logo-section img {
             width: 60px;
             height: auto;
             margin-right: 10px;
+            transition:transform .5s;
+
         }
 
         nav a {
@@ -47,9 +52,17 @@
             text-decoration: none;
             color: white;
             display: block;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section :hover{
+            transform: translateY(-10px);
+            background-color:darkred;
         }
 
         nav a:hover {
+            transform: translateY(-10px);
             background-color: darkred;
         }
 
@@ -83,18 +96,52 @@
 
         /* Footer */
         footer {
-            padding: 5px 20px; /* Reduce padding to make it less tall */
+            padding: 10px 20px;
             background-color: black;
             color: white;
             text-align: center;
             width: 100%;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            padding-bottom: 100px;
         }
 
-        
+        /* Style for artist and album display */
+        .artist-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .artist-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .artist-item h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .artist-item p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .artist-item a {
+            color: darkred;
+            text-decoration: none;
+        }
+
+        .artist-item a:hover {
+            text-decoration: underline;
+        }
+
+        .artist-container p.no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-style: italic;
+            color: darkred;
+        }
     </style>
 </head>
 <body>
@@ -102,26 +149,107 @@
 <!-- Sidebar -->
 <nav>
     <div class="logo-section">
-        <img src="jukeboxed\logo-white.png" alt="Logo">
+        <img src="\jukeboxed\images\logo-white.png" alt="Logo">
         <span><a target="_blank" href="main.html" style="color: white; text-decoration: none;"><b>Jukeboxed</b></a></span>
     </div>
-    <a href="main.html">Home</a>
-    <a href="page2.html">Featured Songs</a>
-    <a href="page3.html">About Us</a>
-    <a href="page4.html">Bounus Songs!</a>
-    <a href="search.html">Search</a>
-
+    <div id="nav_links">
+        <a href="main.html">Home</a>
+        <a href="page2.html">Featured Songs</a>
+        <a href="page3.html">About Us</a>
+        <a href="page4.html">Discover Artists</a>
+        <a href="search.html">Discover Songs!</a>
+    </div>
 </nav>
 
 <!-- Main content -->
 <div class="main-content">
+    <header>
+        <img src="\jukeboxed\images\logo-white.png" alt="Logo">
+        <h2>Discover New Artists</h2>
+    </header>
 
+    <div id="artist-container" class="artist-container"></div>
+
+    <div id="filterModal">
+        <h3>Artist</h3>
+        <div>
+            <label for="artist">Filter by Artist</label>
+            <select id="artist">
+                <option value="random">All</option>
+                    <option value="Michael Jackson">Michael Jackson</option>
+                    <option value="Tina Turner">Tina Turner</option>
+                    <option value="Lady Gaga">Lady Gaga</option>
+                    <option value="Stevie Wonder">Stevie Wonder</option>
+                    <option value="Prince">Prince</option>
+                    <option value="Nirvana">Nirvana</option>
+                    <option value="The Beatles">The Beatles</option>
+                    <option value="Pink Floyd">Pink Floyd</option>
+                    <option value="Led Zeppelin">Led Zeppelin</option>
+                    <option value="The Rolling Stones">The Rolling Stones</option>
+                    <option value="Bo Burnham">Bo Burnham</option>
+                    <option value="Eminem">Eminem</option>
+                    <option value="Wu-Tang Clan">Wu-Tang Clan</option>
+                    <option value="Kanye West">Kanye West</option>
+                    <option value="Dolly Parton">Dolly Parton</option>
+                    <option value="Willie Nelson">Willie Nelson</option>
+                    <option value="Waylon Jennings">Waylon Jennings</option>
+                    <option value="Nitty Gritty Dirt Band">Nitty Gritty Dirt Band</option>
+                    <option value="Brooks & Dunn">Brooks & Dunn</option>
+                    <option value="Art Tatum">Art Tatum</option>
+                    <option value="John Coltrane">John Coltrane</option>
+                    <option value="Bob Dylan">Bob Dylan</option>
+                    <option value="Miles Davis">Miles Davis</option>
+            </select>
+        </div>
+        <button id="updateButton">Search</button>
+    </div>
 </div>
 
 <!-- Footer -->
 <footer>
     <p>Copyright &copy; 2024 All Rights Reserved - <span>Jukeboxed LLC</span></p>
 </footer>
+
+<script>
+    document.getElementById('updateButton').addEventListener('click', function() {
+        const selectedArtist = document.getElementById('artist').value.toLowerCase();
+
+        fetch('http://localhost:3000/artists/discovery')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                const artistContainer = document.getElementById('artist-container');
+                artistContainer.innerHTML = ''; // Clear previous results
+
+                // Filter and display artists
+                const filteredArtists = data.filter(artist => 
+                    selectedArtist === 'random' || artist.artist.toLowerCase().includes(selectedArtist)
+                );
+
+                if (filteredArtists.length === 0) {
+                    artistContainer.innerHTML = '<p class="no-results">No artists found for the selected filter.</p>';
+                    return;
+                }
+
+                filteredArtists.forEach(artist => {
+                    const artistElement = document.createElement('div');
+                    artistElement.classList.add('artist-item');
+                    artistElement.innerHTML = `
+                        <h3>${artist.artist}</h3>
+                        <p><strong>Albums:</strong> ${artist.album || 'No albums available'}</p>
+                        <p><strong>Wikipedia:</strong> <a href="${artist.wikipedia_link}" target="_blank">Click here</a></p>
+                    `;
+                    artistContainer.appendChild(artistElement);
+                });
+            })
+            .catch(err => {
+                console.error('Error fetching artist data:', err);
+                alert('Failed to fetch artist data. Please try again later.');
+            });
+    });
+</script>
 
 </body>
 </html>

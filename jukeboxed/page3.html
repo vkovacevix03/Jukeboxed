@@ -44,18 +44,23 @@
             position: fixed;
             height: 100%;
             padding-top: 20px;
+            transition:transform .5s;
         }
 
         nav .logo-section {
             display: flex;
             align-items: center;
             padding: 10px;
+            transition:transform .5s;
+
         }
 
         nav .logo-section img {
             width: 60px;
             height: auto;
             margin-right: 10px;
+            transition:transform .5s;
+
         }
 
         nav a {
@@ -64,9 +69,17 @@
             text-decoration: none;
             color: white;
             display: block;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section :hover{
+            transform: translateY(-10px);
+            background-color:darkred;
         }
 
         nav a:hover {
+            transform: translateY(-10px);
             background-color: darkred;
         }
 
@@ -145,14 +158,16 @@
 <!-- Sidebar -->
 <nav>
     <div class="logo-section">
-        <img src="jukeboxed\logo-white.png" alt="Logo">
+        <img src="\jukeboxed\images\logo-white.png" alt="Logo">
         <span><a target="_blank" href=".html" style="color: white; text-decoration: none;"><b>jukeboxed</b></a></span>
     </div>
-    <a href="main.html">Home</a>
-    <a href="page2.html">Featured Songs</a>
-    <a href="page3.html">About Us</a>
-    <a href="page4.html">bounus songs!</a>
-    <a href="search.html">Search</a>
+    <div id="nav_links">
+        <a href="main.html">Home</a>
+        <a href="page2.html">Featured Songs</a>
+        <a href="page3.html">About Us</a>
+        <a href="page4.html">Discover Artists</a>
+        <a href="search.html">Discover Songs!</a>
+    </div>
 
 </nav>
 
@@ -160,17 +175,17 @@
 <div class="main-content">
     <header>
         <!-- Logo and text -->
-        <img src="jukeboxed\logo-white.png" alt="Jukeboxed Logo">
+        <img src="\jukeboxed\images\logo-white.png" alt="Jukeboxed Logo">
         <h2>About us!</h2>
     </header>
 
         <!-- Picture Gallery -->
         <div class="picture-gallery">
             <div class="picture-box">
-                <img src="jukeboxed\guy1.jpg" alt="Logo">
+                <img src="\jukeboxed\images\guy1.jpg" alt="Logo">
             </div>
             <div class="picture-box">
-                <img src="jukeboxed\guy2.jpg" alt="Logo">
+                <img src="\jukeboxed\images\guy2.jpg" alt="Logo">
             </div>
         </div>
 
