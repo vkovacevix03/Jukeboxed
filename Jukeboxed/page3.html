@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Jukeboxed</title>
+    <style>
+
+         /* Header with logo */
+         header {
+            background-color: darkred;
+            text-align: center;
+            padding: 20px 10px; /* Padding for space around the logo */
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        header img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            margin: 10px 0 0 0;
+            font-size: 20px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full viewport height */
+        }
+
+        /* Sidebar style from previous code */
+        nav {
+            width: 200px;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            transition:transform .5s;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section img {
+            width: 60px;
+            height: auto;
+            margin-right: 10px;
+            transition:transform .5s;
+
+        }
+
+        nav a {
+            padding: 15px;
+            text-align: left;
+            text-decoration: none;
+            color: white;
+            display: block;
+            transition:transform .5s;
+
+        }
+
+        nav .logo-section :hover{
+            transform: translateY(-10px);
+            background-color:darkred;
+        }
+
+        nav a:hover {
+            transform: translateY(-10px);
+            background-color: darkred;
+        }
+
+        img {
+            width: 100%;
+            height: 200px; /* Set a fixed height for all images */
+            object-fit: cover; /* Ensures images cover the area and keep aspect ratio */
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 200px; /* Account for sidebar width */
+            padding: 20px;
+            flex: 1; /* Allows the content to expand and fill available space */
+            background-color: #f0f0f0;
+            padding-bottom: 100px;
+        }
+
+        .contact-section {
+            padding: 20px;
+        }
+
+        .contact-section h2 {
+            text-align: center;
+        }
+
+        .picture-gallery {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .picture-gallery .picture-box {
+            width: 300px;
+            height: 200px;
+            border: 1px solid #ccc;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .mission-story {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .mission-story p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        footer {
+            padding: 5px 20px; /* Reduce padding to make it less tall */
+            background-color: black;
+            color: white;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav>
+    <div class="logo-section">
+        <img src="\jukeboxed\images\logo-white.png" alt="Logo">
+        <span><a target="_blank" href=".html" style="color: white; text-decoration: none;"><b>jukeboxed</b></a></span>
+    </div>
+    <div id="nav_links">
+        <a href="main.html">Home</a>
+        <a href="page2.html">Featured Songs</a>
+        <a href="page3.html">About Us</a>
+        <a href="page4.html">Discover Artists</a>
+        <a href="search.html">Discover Songs!</a>
+    </div>
+
+</nav>
+
+<!-- Main content -->
+<div class="main-content">
+    <header>
+        <!-- Logo and text -->
+        <img src="\jukeboxed\images\logo-white.png" alt="Jukeboxed Logo">
+        <h2>About us!</h2>
+    </header>
+
+        <!-- Picture Gallery -->
+        <div class="picture-gallery">
+            <div class="picture-box">
+                <img src="\jukeboxed\images\guy1.jpg" alt="Logo">
+            </div>
+            <div class="picture-box">
+                <img src="\jukeboxed\images\guy2.jpg" alt="Logo">
+            </div>
+        </div>
+
+        <!-- Mission Story -->
+        <div class="mission-story">
+            <h3>Our Mission</h3>
+            <p>
+                At Jukeboxed, we believe in bringing music to life. Our mission is to provide a platform for music lovers to discover, enjoy, and share the songs that speak to their soul. We are committed to curating the best playlists, promoting undiscovered talent, and creating a community where music knows no boundaries. Whether you’re looking for a new favorite tune or an old classic, Jukeboxed is here to keep you jamming.
+            </p>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <p><b>Email:</b> contact@jukeboxed.com</p>
+            <p><b>Phone:</b> +123 456 7890</p>
+            <p><b>Address:</b> 123 Music Lane, Sound City, MP3 4567</p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p style="font-size: 10px; color:white">Copyright &copy; 2024 All Rights Reserved - <span style="color: white;">Jukeboxed LLC</span></p>
+</footer>
+
+</body>
+</html>
